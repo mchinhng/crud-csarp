@@ -1,0 +1,62 @@
+@{
+    ViewData["Title"] = "List user";
+    int pageNumber = ViewBag.PageNumber;
+    int pageSize = ViewBag.PageSize;
+    int totalPages = ViewBag.TotalPages;
+}
+
+@model List<UserInfo.Web.Models.Entities.User>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <h1>@ViewData["Title"]</h1>
+        </div>
+
+        <div class="col-sm-6">
+            <a class="btn btn-success float-end" asp-controller="Users" asp-action="Add">Add user</a>
+        </div>
+    </div>
+
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.Name</td>
+                    <td>@user.Email</td>
+                    <td class="text-center">
+                        <a class="btn btn-primary" asp-controller="Users" asp-action="Edit" asp-route-id="@user.Id">Edit</a>
+                        <button type="button" class="btn btn-danger delete-button"
+                            data-url="@Url.Action("Delete", "Users", new { id = @user.Id })">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="container">
+        <div class="d-flex align-items-center justify-content-end">
+            <p class="mb-0 mr-2">Page @pageNumber of @totalPages</p>
+            @if (pageNumber > 1)
+            {
+                <a class="btn btn-primary mr-1" href="?pageNumber=@(pageNumber - 1)&pageSize=@pageSize">Previous</a>
+            }
+            @if (pageNumber < totalPages)
+            {
+                <a class="btn btn-primary" href="?pageNumber=@(pageNumber + 1)&pageSize=@pageSize">Next</a>
+            }
+        </div>
+
+    </div>
+</div>
